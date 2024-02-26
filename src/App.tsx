@@ -8,26 +8,33 @@ import { Genre } from "./hooks/useGenres";
 import PlatformSelector from "./components/PlatformSelector";
 import { Platform } from "./hooks/usePlatforms";
 
+export interface GameQuery {
+  genre: Genre | null;
+  platform: Platform | null;
+}
+
 function App() {
-  const [selectedGenre, setSelectedGenre] = useState<Genre | null>(null);
-  const [selectedPlatform, setSelectedPlatform] = useState<Platform | null>(null);
+  const [gameQuery, setGameQuery] = useState<GameQuery>({} as GameQuery);
+
+  // const [selectedGenre, setSelectedGenre] = useState<Genre | null>(null);
+  // const [selectedPlatform, setSelectedPlatform] = useState<Platform | null>(null);
 
   const handleSelectGenre = (genre: Genre) => {
-    if (selectedGenre?.id === genre.id) {
-      setSelectedGenre(null);
+    if (gameQuery.genre?.id === genre.id) {
+      setGameQuery({ ...gameQuery, genre: null });
       return;
     }
 
-    setSelectedGenre(genre);
+    setGameQuery({ ...gameQuery, genre });
   }
 
   const handleSelectPlatform = (platform: Platform) => {
-    if (selectedPlatform?.id === platform.id) {
-      setSelectedPlatform(null);
+    if (gameQuery.platform?.id === platform.id) {
+      setGameQuery({ ...gameQuery, platform: null });
       return;
     }
 
-    setSelectedPlatform(platform);
+    setGameQuery({ ...gameQuery, platform });
   }
 
   return (
@@ -48,18 +55,17 @@ function App() {
         <GridItem gridArea={"aside"} pt={4}>
           <GenreList
             onSelectedGenre={handleSelectGenre}
-            selectedGenre={selectedGenre}
+            selectedGenre={gameQuery.genre}
           />
         </GridItem>
       </Show>
       <GridItem gridArea={"main"} p={4}>
         <PlatformSelector
           onSelectedPlatform={handleSelectPlatform}
-          selectedPlatform={selectedPlatform}
+          selectedPlatform={gameQuery.platform}
         />
         <GameGrid
-          selectedGenre={selectedGenre}
-          selectedPlatform={selectedPlatform}
+          gameQuery={gameQuery}
         />
       </GridItem>
     </Grid >
