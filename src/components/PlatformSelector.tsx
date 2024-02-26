@@ -20,6 +20,8 @@ const PlatformSelector = ({ onSelectedPlatform, selectedPlatform }: Props) => {
       <MenuList>
         {platforms.map((platform) => (
           <MenuItem
+            backgroundColor={selectedPlatform?.id === platform.id ? "gray.600" : "transparent"}
+            _hover={{ backgroundColor: "gray.600" }}
             key={platform.id}
             onClick={() => onSelectedPlatform(platform)}
           >{platform.name}</MenuItem>
