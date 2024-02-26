@@ -4,19 +4,27 @@ import getCroppendImageUrl from "../services/image-crop";
 
 interface Props {
   onSelectedGenre: (genre: Genre) => void;
+  selectedGenre?: Genre | null;
 }
 
-const GenreList = ({ onSelectedGenre }: Props) => {
+const GenreList = ({ onSelectedGenre, selectedGenre }: Props) => {
   const { data: genres, error, isLoading } = useGenres();
 
   return (
     <>
       {isLoading && <Spinner />}
       {error && <div>{error}</div>}
-      <List paddingLeft={4}>
+      <List>
         {genres.map((genre) => (
-          <ListItem key={genre.id} paddingY="5px">
-            <HStack as="button" onClick={() => onSelectedGenre(genre)}>
+          <ListItem key={genre.id}>
+            <HStack as="button"
+              onClick={() => onSelectedGenre(genre)}
+              py="5px"
+              pl={6}
+              width="100%"
+              bgColor={selectedGenre?.id === genre.id ? "gray.700" : "transparent"}
+              roundedRight={8}
+            >
               <Image
                 src={getCroppendImageUrl(genre.image_background)}
                 alt={genre.name}
@@ -24,7 +32,9 @@ const GenreList = ({ onSelectedGenre }: Props) => {
                 boxSize="30px"
                 objectFit="cover"
               />
-              <Text>{genre.name}</Text>
+              <Text
+                fontWeight={selectedGenre?.id === genre.id ? "bold" : "normal"}
+              >{genre.name}</Text>
             </HStack>
           </ListItem>
         ))}
